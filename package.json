@@ -1,5 +1,5 @@
 {
-  "name": "au-whm-cap-monitor",
+  "name": "whm-cap-alert",
   "version": "1.0.0",
   "description": "Automated status scraper and alert system for Australian WHM country caps.",
   "main": "scraper.js",
