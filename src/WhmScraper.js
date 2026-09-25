@@ -5,8 +5,8 @@ export class WhmScraper {
     this.url = url;
   }
 
-  async scrape(targetCountries) {
-    console.log(`Launching browser to fetch ${this.url}...`);
+  async scrape() {
+    console.log(`Launching browser to fetch Home Affairs status page...`);
     const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
     const currentStatuses = {};
@@ -14,20 +14,28 @@ export class WhmScraper {
     try {
       await page.goto(this.url, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
-      for (const country of targetCountries) {
-        const statusText = await page.evaluate((countryName) => {
-          const rows = Array.from(document.querySelectorAll('table tr'));
-          for (const row of rows) {
-            if (row.innerText.includes(countryName)) {
-              const cells = row.querySelectorAll('td');
-              return cells.length > 0 ? cells[cells.length - 1].innerText.trim() : null;
-            }
-          }
-          return null;
-        }, country);
+      const statusText = await page.evaluate(() => {
+        const rows = Array.from(document.querySelectorAll('tbody tr'));
 
-        currentStatuses[country] = statusText || 'unknown';
-      }
+        for (const row of rows) {
+          const cells = row.querySelectorAll('td');
+          if (cells.length < 2)
+            continue;
+
+          const country = cells[0].innerText.trim();
+          const label = cells[1].querySelector('.label');
+          let statusText = null;
+
+          if (label) {
+            statusText = label.innerText.trim().toUpperCase();
+          } else if (cells[1].innerText.toLowerCase().includes('ballot')) {
+            statusText = 'BALLOT';
+          }
+
+          currentStatuses[country] = statusText || 'unknown';
+        }
+      });
+
 
       return currentStatuses;
     } catch (error) {
