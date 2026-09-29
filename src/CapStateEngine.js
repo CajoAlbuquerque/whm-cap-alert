@@ -1,31 +1,28 @@
+const UNKNOWN_STATE = 'UNKNOWN';
+
 export class CapStateEngine {
+  constructor(targetCountries) {
+    this.targetCountries = targetCountries;
+  }
+
   evaluate(previousState, currentState) {
     const changes = [];
 
-    for (const [country, newStatusRaw] of Object.entries(currentState)) {
-      const oldStatus = (previousState[country] || 'unknown').toLowerCase();
-      const newStatus = (newStatusRaw || 'unknown').toLowerCase();
+    for (const country of this.targetCountries) {
+      const oldStatus = (previousState[country] || UNKNOWN_STATE);
+      const newStatus = (currentState[country] || UNKNOWN_STATE);
 
-      // Skip evaluation if state hasn't changed or baseline is unknown
-      if (oldStatus === newStatus || oldStatus === 'unknown') {
+      // Skip evaluation if state hasn't changed or is unknown
+      if (oldStatus === newStatus || newStatus === UNKNOWN_STATE) {
         continue;
       }
 
-      if (newStatus.includes('open')) {
-        changes.push({
-          country,
-          type: 'REOPENED',
-          oldStatus: previousState[country],
-          newStatus: newStatusRaw,
-        });
-      } else if (newStatus.includes('closed') || newStatus.includes('paused')) {
-        changes.push({
-          country,
-          type: 'CLOSED',
-          oldStatus: previousState[country],
-          newStatus: newStatusRaw,
-        });
-      }
+      changes.push({
+        country,
+        type: oldStatus === UNKNOWN_STATE ? 'NEW' : newStatus,
+        oldStatus: previousState[country],
+        newStatus: newStatus,
+      });
     }
 
     return changes;
