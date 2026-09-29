@@ -2,6 +2,7 @@ import { chromium } from 'playwright-extra';
 import stealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 chromium.use(stealthPlugin());
+const UNKNOWN_STATE = 'UNKNOWN';
 
 export class WhmScraper {
   constructor(url) {
@@ -11,7 +12,7 @@ export class WhmScraper {
   async scrape() {
     console.log(`Launching browser to fetch Home Affairs status page...`);
     const browser = await chromium.launch({ headless: true });
-    
+
     const context = await browser.newContext({
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
       locale: 'en-US',
@@ -26,6 +27,11 @@ export class WhmScraper {
       await this.checkForErrors(response, page);
 
       const currentStatuses = await page.evaluate(() => {
+        const cleanString = (str) => str
+          .replace(/[^\p{L}\s]/gu, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+
         const statuses = {};
         const rows = Array.from(document.querySelectorAll('tbody tr'));
 
@@ -33,20 +39,21 @@ export class WhmScraper {
           const cells = row.querySelectorAll('td');
           if (cells.length < 2) continue;
 
-          const country = cells[0].innerText.trim();
+          const country = cleanString(cells[0].innerText);
+          const statusTextRaw = cleanString(cells[1].innerText);
           const label = cells[1].querySelector('.label');
           let statusText = null;
 
           if (label) {
-            statusText = label.innerText.trim().toUpperCase();
-          } else if (cells[1].innerText.toLowerCase().includes('ballot')) {
+            statusText = cleanString(label.innerText).toUpperCase();
+          } else if (statusTextRaw.toLowerCase().includes('ballot')) {
             statusText = 'BALLOT';
           } else {
-            statusText = cells[1].innerText.trim().toUpperCase();
+            statusText = statusTextRaw.toUpperCase();
           }
 
           if (country) {
-            statuses[country] = statusText || 'UNKNOWN';
+            statuses[country] = statusText || UNKNOWN_STATE;
           }
         }
 
