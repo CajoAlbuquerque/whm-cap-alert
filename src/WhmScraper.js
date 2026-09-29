@@ -1,4 +1,7 @@
-import { chromium } from 'playwright';
+import { chromium } from 'playwright-extra';
+import stealthPlugin from 'puppeteer-extra-plugin-stealth';
+
+chromium.use(stealthPlugin());
 
 export class WhmScraper {
   constructor(url) {
@@ -8,7 +11,14 @@ export class WhmScraper {
   async scrape() {
     console.log(`Launching browser to fetch Home Affairs status page...`);
     const browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage();
+    
+    const context = await browser.newContext({
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+      locale: 'en-US',
+      timezoneId: 'Australia/Sydney',
+    });
+
+    const page = await context.newPage();
 
     try {
       const response = await page.goto(this.url, { waitUntil: 'domcontentloaded', timeout: 60000 });
