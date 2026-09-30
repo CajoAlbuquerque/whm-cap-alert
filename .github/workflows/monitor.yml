@@ -2,7 +2,7 @@ name: Monitor WHM Visa Country Caps
 
 on:
   # schedule:
-  #   - cron: '*/15 * * * *' # Runs every 15 minutes
+  #   - cron: '0 * * * *' # Runs every 15 minutes
   workflow_dispatch: # Allows manual trigger from the GitHub Actions UI
 
 permissions:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '26'
           cache: 'npm'
 
       - name: Install Dependencies
@@ -31,7 +31,8 @@ jobs:
       - name: Run Scraper
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
+          NOTIFY_EMAILS: ${{ secrets.NOTIFY_EMAILS }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
         run: node scraper.js
 
       - name: Commit and Push Updated Status JSON
