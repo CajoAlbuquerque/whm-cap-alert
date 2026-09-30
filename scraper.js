@@ -10,9 +10,9 @@ async function main() {
   console.log('--- Starting WHM Country Cap Check ---');
 
   const scraper = new WhmScraper(STATUS_PAGE_URL);
-  const stateEngine = new CapStateEngine(process.env.TARGET_COUNTRIES);
+  const stateEngine = new CapStateEngine(process.env.SUBSCRIPTIONS);
   const stateStore = new StateStore('./status.json');
-  const notifier = new EmailNotifier(process.env.RESEND_API_KEY, process.env.NOTIFY_EMAILS, process.env.SENDER_EMAIL);
+  const notifier = new EmailNotifier(process.env.RESEND_API_KEY, process.env.SENDER_EMAIL);
 
   try {
     // 1. Fetch current status from page
