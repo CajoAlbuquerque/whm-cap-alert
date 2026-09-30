@@ -19,7 +19,7 @@ export class CapStateEngine {
 
       changes.push({
         country,
-        type: oldStatus === UNKNOWN_STATE ? 'NEW' : newStatus,
+        type: oldStatus === UNKNOWN_STATE && newStatus !== 'OPEN' ? 'NEW' : newStatus,
         oldStatus: previousState[country],
         newStatus: newStatus,
       });

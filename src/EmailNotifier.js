@@ -25,13 +25,15 @@ export class EmailNotifier {
           `🚀 WHM Visa Cap OPEN: ${change.country}!`,
           `<h2>Good news!</h2>
            <p>The Australian Work and Holiday Visa cap for <strong>${change.country}</strong> is now status: <strong>${change.newStatus}</strong>.</p>
-           <p><a href="${statusPageUrl}">Click here to apply on the official site</a></p>`
+           <p><a href="${statusPageUrl}">Click here to apply on the official site</a></p>
+           <p>This was an auto-generated message from the <a href="${repoUrl}">whm-cap-alert GitHub repository</a>.</p>`
         );
       } else if (change.type === 'PAUSED') {
         this.batchEmail(
           `ℹ️ WHM Visa Cap Update: ${change.country} is now ${change.newStatus}`,
           `<p>The cap status for <strong>${change.country}</strong> has changed to: <strong>${change.newStatus}</strong>.</p>
-           <p>Previously, it was: ${change.oldStatus}.</p>`
+           <p>Previously, it was: ${change.oldStatus}.</p>
+           <p>This was an auto-generated message from the <a href="${repoUrl}">whm-cap-alert GitHub repository</a>.</p>`
         );
       } else if (change.type === 'NEW') {
         this.batchEmail(
@@ -43,7 +45,8 @@ export class EmailNotifier {
         this.batchEmail(
           `❌ WHM Visa Cap for ${change.country} is CLOSED`,
           `<p>The cap status for <strong>${change.country}</strong> has changed to: <strong>${change.newStatus}</strong>.</p>
-           <p>Unfortunately that means it won't reopen for this application year. For more information <a href="${statusPageUrl}">click here to go to the official site</a></p>`
+           <p>Unfortunately that means it won't reopen for this application year. For more information <a href="${statusPageUrl}">click here to go to the official site</a></p>
+           <p>This was an auto-generated message from the <a href="${repoUrl}">whm-cap-alert GitHub repository</a>.</p>`
         );
       }
     }
