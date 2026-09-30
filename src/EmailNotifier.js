@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 
 export class EmailNotifier {
-  constructor(apiKey, recipientEmails) {
+  constructor(apiKey, recipientEmails, senderEmail) {
     if (!apiKey) throw new Error('Resend API Key is required.');
     if (!recipientEmails) throw new Error('Recipient emails are required.');
 
@@ -14,8 +14,7 @@ export class EmailNotifier {
 
     this.resend = new Resend(apiKey);
     this.recipients = recipients;
-    // TODO: Change to different domain for prod
-    this.senderEmail = 'WHM Cap Alert <onboarding@resend.dev>';
+    this.senderEmail = `WHM Cap Alert <${senderEmail}>`;
     this.batchPayload = [];
   }
 
