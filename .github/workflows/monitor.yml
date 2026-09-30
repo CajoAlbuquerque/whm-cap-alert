@@ -41,6 +41,3 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add status.json
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update status.json state" && git push)
-
-      - name: Keepalive Workflow
-        uses: gautamkrishnar/keepalive-workflow@v2
