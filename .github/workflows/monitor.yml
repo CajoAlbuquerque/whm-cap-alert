@@ -1,8 +1,8 @@
 name: Monitor WHM Visa Country Caps
 
 on:
-  # schedule:
-  #   - cron: '0 * * * *' # Runs every 15 minutes
+  schedule:
+    - cron: '0 * * * *' # Runs every hour
   workflow_dispatch: # Allows manual trigger from the GitHub Actions UI
 
 permissions:
@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '26'
           cache: 'npm'
