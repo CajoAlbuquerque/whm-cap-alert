@@ -31,7 +31,7 @@ jobs:
       - name: Run Scraper
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          NOTIFY_EMAILS: ${{ secrets.NOTIFY_EMAILS }}
+          SUBSCRIPTIONS: ${{ secrets.SUBSCRIPTIONS }}
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
         run: node scraper.js
 
