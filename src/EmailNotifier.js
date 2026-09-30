@@ -38,7 +38,7 @@ export class EmailNotifier {
       } else if (change.type === 'NEW') {
         this.batchEmail(
           `✅ You are now subscribed to WHM Visa Cap updates for: ${change.country}!`,
-          `<p>The Australian Work and Holiday Visa cap for <strong>${change.country}</strong> is currently status: <strong>${change.newStatus}</strong>.</p>
+          `<p>The Australian Work and Holiday Visa cap for <strong>${change.country}</strong> current status is: <strong>${change.newStatus}</strong>.</p>
            <p>This was an auto-generated message from the <a href="${repoUrl}">whm-cap-alert GitHub repository</a>.</p>`
         );
       } else if (change.type === 'CLOSED') {

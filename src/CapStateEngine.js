@@ -2,7 +2,14 @@ const UNKNOWN_STATE = 'UNKNOWN';
 
 export class CapStateEngine {
   constructor(targetCountries) {
-    this.targetCountries = targetCountries;
+    if (!targetCountries) throw new Error('Target countries are required.');
+
+    this.targetCountries = targetCountries
+      .split(',')
+      .map((country) => country.trim())
+      .filter(Boolean);
+
+    if (!this.targetCountries || this.targetCountries.length === 0) throw new Error('There are no valid countries to check.');
   }
 
   evaluate(previousState, currentState) {

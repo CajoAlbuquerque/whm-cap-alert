@@ -3,7 +3,6 @@ import { CapStateEngine } from './src/CapStateEngine.js';
 import { StateStore } from './src/StateStore.js';
 import { EmailNotifier } from './src/EmailNotifier.js';
 
-const TARGET_COUNTRIES = ['Portugal'];
 const STATUS_PAGE_URL = 'https://immi.homeaffairs.gov.au/what-we-do/whm-program/status-of-country-caps';
 const REPO_URL = 'https://github.com/CajoAlbuquerque/whm-cap-alert';
 
@@ -11,7 +10,7 @@ async function main() {
   console.log('--- Starting WHM Country Cap Check ---');
 
   const scraper = new WhmScraper(STATUS_PAGE_URL);
-  const stateEngine = new CapStateEngine(TARGET_COUNTRIES);
+  const stateEngine = new CapStateEngine(process.env.TARGET_COUNTRIES);
   const stateStore = new StateStore('./status.json');
   const notifier = new EmailNotifier(process.env.RESEND_API_KEY, process.env.NOTIFY_EMAILS, process.env.SENDER_EMAIL);
 
