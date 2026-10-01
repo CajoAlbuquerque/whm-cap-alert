@@ -2,7 +2,7 @@ name: Monitor WHM Visa Country Caps
 
 on:
   schedule:
-    - cron: '23 * * * *' # Runs every hour
+    - cron: '23 */3 * * *' # Runs every 3 hours on minute 23
   workflow_dispatch: # Allows manual trigger from the GitHub Actions UI
 
 permissions:
